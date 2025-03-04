@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ekta, Will You Be Mine 🫴? 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background: #1a1a1a;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #tsparticles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 0 0 10px #ff69b4;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            padding: 0 15px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+            font-weight: bold;
+            touch-action: manipulation;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        #noBtn {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+        }
+
+        #message {
+            display: none;
+            font-size: 1.8rem;
+            color: #ff4081;
+            font-weight: bold;
+            font-style: italic;
+            text-shadow: 0 0 20px #ff1493;
+            margin: 2rem 15px 0;
+            animation: float 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.4rem;
+            }
+            button {
+                padding: 0.8rem 1.2rem;
+                font-size: 1rem;
+                min-width: 100px;
+            }
+            #message {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="tsparticles"></div>
+    <div class="container">
+        <h1>Ekta, Will You Be My Girlfriend ? 🌹</h1>
+        <div class="buttons">
+            <button id="yesBtn">YES! 💖</button>
+            <button id="noBtn">No 😢</button>
+        </div>
+        <div id="message">
+            💞 Love you mera Chanda #Ekku! 💞<br>- Your Abhishek
+        </div>
+    </div>
+
+    <audio id="loveSong">
+        <source src="https://drive.google.com/uc?export=download&id=15JzovHbKYYegGN11-Dt3FhLwr3yuYtCv" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const message = document.getElementById('message');
+            const buttons = document.querySelector('.buttons');
+            const loveSong = document.getElementById('loveSong');
+
+            // Heart shape SVG
+            const heartShape = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgNC40MjljLTEuNzU1LTEuOTktNC4yMjMtMy4wNy02Ljg4LTMuMDctMy42NjUgMC02LjY2MyAyLjMzNS02LjY2MyA2LjEgMCAxLjQuMjIgMy44MjQgMi41MTMgNS42N2w3LjE0MyA3LjQzNiA3LjE0My03LjQzNmMxLjg5Ny0xLjg0NiAyLjUxMy0zLjQ1IDIuNTEzLTUuNjcgMC0zLjc2NS0zLTAuMS02LjY2My02LjEtLjAwMSAwLTUuMjkwIDUuNjYtNi44OC0zLjA3eiIgZmlsbD0iI2ZmNDI4ZmYiLz48L3N2Zz4=';
+
+            // Initialize background particles
+            await tsParticles.load('tsparticles', {
+                particles: {
+                    number: { value: 30 },
+                    color: { value: "#ffffff" },
+                    opacity: { value: 0.3 },
+                    size: { value: 2 },
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "bounce"
+                    }
+                }
+            });
+
+            // Mobile touch handlers
+            noBtn.addEventListener('touchstart', moveButton);
+            noBtn.addEventListener('click', moveButton);
+
+            yesBtn.addEventListener('click', handleYes);
+            yesBtn.addEventListener('touchstart', handleYes);
+
+            async function moveButton() {
+                const maxX = window.innerWidth - noBtn.offsetWidth;
+                const maxY = window.innerHeight - noBtn.offsetHeight;
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = Math.random() * maxX + 'px';
+                noBtn.style.top = Math.random() * maxY + 'px';
+            }
+
+            async function handleYes() {
+                buttons.style.display = 'none';
+                message.style.display = 'block';
+                
+                // Load romantic heart particles with spacing
+                await tsParticles.load('tsparticles', {
+                    particles: {
+                        number: { 
+                            value: 40,
+                            density: {
+                                enable: true,
+                                value_area: 1500
+                            }
+                        },
+                        color: { value: "#ff69b4" },
+                        shape: {
+                            type: "image",
+                            image: {
+                                src: heartShape,
+                                width: 24,
+                                height: 24
+                            }
+                        },
+                        opacity: {
+                            value: 0.3,
+                            random: true
+                        },
+                        size: {
+                            value: 14,
+                            random: true
+                        },
+                        move: {
+                            enable: true,
+                            speed: 4,
+                            direction: "bottom",
+                            random: true,
+                            straight: false,
+                            out_mode: "bounce",
+                            bounce: true
+                        },
+                        line_linked: {
+                            enable: false,
+                            distance: 400,
+                            color: "#ff69b4",
+                            opacity: 0.2,
+                            width: 1
+                        }
+                    }
+                });
+
+                loveSong.play().catch(e => console.log('Music will play after interaction'));
+            }
+        });
+    </script>
+</body>
+</html>
